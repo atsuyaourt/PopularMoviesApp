@@ -1,0 +1,93 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".DetailFragment"
+    tools:showIn="@layout/activity_detail">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/detail_movie_title"
+        android:id="@+id/detail_movie_title"
+        android:background="@color/colorAccentLight"
+        android:textColor="@color/colorForeground"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/movie_detail_large_text"
+        android:padding="@dimen/movie_detail_header_paddng"
+        android:minLines="2" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/movie_detail_horizontal_margin"
+                android:layout_marginBottom="@dimen/movie_detail_horizontal_margin">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/detail_movie_poster_thumb"
+                    android:layout_marginLeft="@dimen/movie_detail_vertical_margin"
+                    android:layout_marginRight="@dimen/movie_detail_vertical_margin"
+                    android:layout_weight="5"
+                    android:scaleType="fitXY"
+                    android:adjustViewBounds="true" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/movie_detail_vertical_margin"
+                    android:layout_weight="7">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/detail_movie_release_year"
+                        android:id="@+id/detail_movie_release_year"
+                        android:textColor="@color/colorSecondaryTextLight"
+                        android:textSize="@dimen/movie_detail_medium_text" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/detail_movie_release_date"
+                        android:id="@+id/detail_movie_release_date"
+                        android:textSize="@dimen/movie_detail_small_text" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/detail_movie_rating"
+                        android:id="@+id/detail_movie_rating"
+                        android:textSize="@dimen/movie_detail_small_text"
+                        android:textColor="@color/colorPrimaryTextLight" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/detail_movie_synopsis"
+                android:id="@+id/detail_movie_synopsis"
+                android:layout_marginRight="@dimen/movie_detail_vertical_margin"
+                android:layout_marginLeft="@dimen/movie_detail_vertical_margin"
+                android:layout_marginTop="@dimen/movie_detail_horizontal_margin"
+                android:layout_marginBottom="@dimen/movie_detail_horizontal_margin"
+                android:textSize="@dimen/movie_detail_small_text" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
