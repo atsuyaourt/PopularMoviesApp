@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Flickster</string>
+    <string name="content_authority">com.movie.flickster.provider</string>
     <string name="action_settings">Settings</string>
 
     <string name="title_activity_detail">Movie Detail</string>
@@ -9,25 +10,21 @@
     <string name="error_fetch_message">Error getting movies</string>
     <string name="error_fetch_detail_message">Error getting movie information</string>
 
-    <string name="detail_movie_title" />
-    <string name="detail_movie_synopsis" />
-    <string name="detail_movie_release_year" />
-    <string name="detail_movie_release_date" />
-    <string name="detail_movie_rating" />
-
     <!-- Strings related to Settings -->
-    <string name="pref_sort_order_label">Sort Order</string>
-    <string name="pref_sort_order_title_popular">Most Popular</string>
-    <string name="pref_sort_order_title_top_rated">Top Rated</string>
-    <string name="pref_sort_order_key" translatable="false">sortOrder</string>
+    <string name="pref_filter_label">Filter</string>
+    <string name="pref_filter_title_popular">Most Popular</string>
+    <string name="pref_filter_title_top_rated">Top Rated</string>
+    <string name="pref_filter_key" translatable="false">sortOrder</string>
+    <string name="pref_filter_value_popular" translatable="false">popular</string>
+    <string name="pref_filter_value_top_rated" translatable="false">top_rated</string>
 
-    <string-array name="pref_sort_order_titles">
-        <item>@string/pref_sort_order_title_popular</item>
-        <item>@string/pref_sort_order_title_top_rated</item>
+    <string-array name="pref_filter_titles">
+        <item>@string/pref_filter_title_popular</item>
+        <item>@string/pref_filter_title_top_rated</item>
     </string-array>
-    <string-array name="pref_sort_order_values">
-        <item>popular</item>
-        <item>top_rated</item>
+    <string-array name="pref_filter_values">
+        <item>@string/pref_filter_value_popular</item>
+        <item>@string/pref_filter_value_top_rated</item>
     </string-array>
 
 </resources>

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.movie.flickster.DetailActivity">
+    tools:context="com.movie.flickster.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,11 +26,27 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <FrameLayout
-            android:id="@+id/fragment_movie_detail"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:ignore="MergeRootFrame" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <fragment
+                android:id="@+id/fragment_movie_posters"
+                android:name="com.movie.flickster.PosterFragment"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                tools:layout="@layout/movie_posters" />
+
+            <FrameLayout
+                android:id="@+id/fragment_movie_detail"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

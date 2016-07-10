@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/primary_material_dark</color>
-    <color name="colorPrimaryDark">@color/primary_dark_material_dark</color>
-    <color name="colorAccent">@color/accent_material_dark</color>
 
-    <color name="colorAccentLight">@color/accent_material_light</color>
+    <color name="white">#FFFFFF</color>
+    <color name="grey">#CCCCCC</color>
+    <color name="grey_700">#646464</color>
+    <color name="black">#000000</color>
 
-    <color name="colorBackground">@color/background_material_dark</color>
-    <color name="colorForeground">@color/foreground_material_dark</color>
-
-    <color name="colorPrimaryTextLight">@color/abc_primary_text_material_light</color>
-    <color name="colorSecondaryTextLight">@color/abc_secondary_text_material_light</color>
+    <color name="deep_teal_500">#FF009688</color>
 
 </resources>
