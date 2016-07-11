@@ -17,6 +17,7 @@
     </style>
 
     <style name="SettingsTheme" parent="AppTheme">
+        <item name="actionBarStyle">@style/AppTheme.AppBarOverlay</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

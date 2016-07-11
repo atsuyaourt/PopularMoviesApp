@@ -8,6 +8,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,6 +56,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     TextView mUserRatingView;
     ImageView mPosterView;
 
+    RecyclerView mTrailerView;
+
     public DetailFragment() {
     }
 
@@ -74,6 +78,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         mReleaseDateView = (TextView) rootView.findViewById(R.id.detail_movie_release_date);
         mUserRatingView = (TextView) rootView.findViewById(R.id.detail_movie_rating);
         mPosterView = (ImageView) rootView.findViewById(R.id.detail_movie_poster_thumb);
+
+        mTrailerView = (RecyclerView) rootView.findViewById(R.id.trailer_recyclerview);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mTrailerView.setLayoutManager(layoutManager);
 
         return rootView;
     }
@@ -113,6 +122,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         mReleaseYearView.setText(Utility.getDateStr(lDate,"yyyy"));
         mReleaseDateView.setText(Utility.getDateStr(lDate,"MMM dd, yyyy"));
 
+        updateDetails(data.getLong(COL_MOVIE_ID));
+
         String imageUrl = Utility.buildTMDBPosterUrl(data.getString(COL_POSTER_PATH));
         Picasso
                 .with(getActivity())
@@ -120,7 +131,6 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 .error(R.drawable.ic_error_black_24dp)
                 .placeholder(R.drawable.progress_animation)
                 .into(mPosterView);
-
     }
 
     @Override
@@ -128,4 +138,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     }
 
+    private void updateDetails(long movieId) {
+        FetchTrailersTask trailersTask = new FetchTrailersTask(getActivity(), mTrailerView);
+        trailersTask.execute(Long.toString(movieId));
+    }
 }

@@ -24,7 +24,6 @@ public class MovieDbHelper extends SQLiteOpenHelper {
 
         final String SQL_CREATE_MOVIE_TABLE = "CREATE TABLE " + MovieEntry.TABLE_NAME + " (" +
                 MovieEntry._ID + " INTEGER PRIMARY KEY, " +
-                MovieEntry.COLUMN_DATE + " INTEGER NOT NULL, " +
                 MovieEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
                 MovieEntry.COLUMN_PLOT_SYNOPSIS + " TEXT, " +
                 MovieEntry.COLUMN_POSTER_PATH + " TEXT, " +
@@ -36,11 +35,43 @@ public class MovieDbHelper extends SQLiteOpenHelper {
                 MovieEntry.COLUMN_FAVORITE + " INTEGER " +
                 " );";
 
+        final String SQL_CREATE_POP_MOVIE_VIEW = "CREATE VIEW IF NOT EXISTS " +
+                MovieEntry.getTableViewFromFilter(MovieEntry.FILTER_POPULAR) + " AS " +
+                " SELECT " +
+                    MovieEntry._ID + ", " +
+                    MovieEntry.COLUMN_TITLE + ", " +
+                    MovieEntry.COLUMN_PLOT_SYNOPSIS + ", " +
+                    MovieEntry.COLUMN_POSTER_PATH + ", " +
+                    MovieEntry.COLUMN_USER_RATING + ", " +
+                    MovieEntry.COLUMN_POPULARITY + ", " +
+                    MovieEntry.COLUMN_RELEASE_DATE +
+                " FROM " + MovieEntry.TABLE_NAME +
+                " WHERE " + MovieEntry.COLUMN_POPULAR + " = 1" +
+                ";";
+
+        final String SQL_CREATE_TOP_MOVIE_VIEW = "CREATE VIEW IF NOT EXISTS " +
+                MovieEntry.getTableViewFromFilter(MovieEntry.FILTER_TOP_RATED) + " AS " +
+                " SELECT " +
+                    MovieEntry._ID + ", " +
+                    MovieEntry.COLUMN_TITLE + ", " +
+                    MovieEntry.COLUMN_PLOT_SYNOPSIS + ", " +
+                    MovieEntry.COLUMN_POSTER_PATH + ", " +
+                    MovieEntry.COLUMN_USER_RATING + ", " +
+                    MovieEntry.COLUMN_POPULARITY + ", " +
+                    MovieEntry.COLUMN_RELEASE_DATE +
+                " FROM " + MovieEntry.TABLE_NAME +
+                " WHERE " + MovieEntry.COLUMN_TOP_RATED + " = 1" +
+                ";";
+
         sqLiteDatabase.execSQL(SQL_CREATE_MOVIE_TABLE);
+        sqLiteDatabase.execSQL(SQL_CREATE_POP_MOVIE_VIEW);
+        sqLiteDatabase.execSQL(SQL_CREATE_TOP_MOVIE_VIEW);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+        sqLiteDatabase.execSQL("DROP VIEW IF EXISTS " + MovieEntry.getTableViewFromFilter(MovieEntry.FILTER_POPULAR));
+        sqLiteDatabase.execSQL("DROP VIEW IF EXISTS " + MovieEntry.getTableViewFromFilter(MovieEntry.FILTER_TOP_RATED));
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + MovieEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }

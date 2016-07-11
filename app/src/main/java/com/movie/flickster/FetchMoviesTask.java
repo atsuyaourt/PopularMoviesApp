@@ -19,7 +19,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Calendar;
 import java.util.Vector;
 
 /**
@@ -44,7 +43,6 @@ public class FetchMoviesTask extends AsyncTask<String, Void, Void> {
         String movieJsonStr;
 
         String filterType;
-        String sortOrder;
         Uri moviesUri;
         Cursor cur;
 
@@ -53,15 +51,6 @@ public class FetchMoviesTask extends AsyncTask<String, Void, Void> {
         }
 
         filterType = params[0]; // filter preference
-        sortOrder = MovieEntry.COLUMN_DATE + " ASC"; // Sort order:  Ascending, by date.
-        moviesUri = MovieEntry.buildMovieWithFilter(filterType);
-        cur = mContext.getContentResolver().query(moviesUri,
-                null, null, null, sortOrder);
-
-        // Already in the database
-        if (cur.getCount() > 0) {
-            return null;
-        }
 
         // Do not proceed if there is no internet connection
         if (!Utility.isOnline(mContext)) {
@@ -153,8 +142,6 @@ public class FetchMoviesTask extends AsyncTask<String, Void, Void> {
             JSONObject movieJson = new JSONObject(movieJsonStr);
             JSONArray movieArray = movieJson.getJSONArray(TMDB_RESULTS);
 
-            long dateNow = Utility.nearestDay(Calendar.getInstance().getTime());
-
             // Insert the new movie information into the database
             Vector<ContentValues> cVVector = new Vector<ContentValues>(movieArray.length());
 
@@ -176,12 +163,12 @@ public class FetchMoviesTask extends AsyncTask<String, Void, Void> {
                 posterPath = movie.getString(TMDB_POSTER_PATH);
                 userRating = movie.getDouble(TMDB_USER_RATING);
                 popularity = movie.getDouble(TMDB_POPULARITY);
-                releaseDate = Utility.convertToJulian(movie.getString(TMDB_RELEASE_DATE), "yyyy-MM-dd");
+                releaseDate = Utility
+                        .convertToJulian(movie.getString(TMDB_RELEASE_DATE), "yyyy-MM-dd");
 
                 ContentValues movieValues = new ContentValues();
 
                 movieValues.put(MovieEntry._ID, movieId);
-                movieValues.put(MovieEntry.COLUMN_DATE, dateNow);
                 movieValues.put(MovieEntry.COLUMN_TITLE, title);
                 movieValues.put(MovieEntry.COLUMN_PLOT_SYNOPSIS, plotSynopsis);
                 movieValues.put(MovieEntry.COLUMN_POSTER_PATH, posterPath);

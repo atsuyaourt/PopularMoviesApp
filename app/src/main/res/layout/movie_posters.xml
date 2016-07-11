@@ -4,13 +4,9 @@
     android:layout_height="match_parent"
     tools:context=".PosterFragment">
 
-    <GridView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/posters_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/poster_gridview"
-        android:numColumns="auto_fit"
-        android:stretchMode="columnWidth"
-        android:gravity="center"
-        android:columnWidth="@dimen/movie_poster_width" />
+        android:layout_height="wrap_content" />
 
 </FrameLayout>

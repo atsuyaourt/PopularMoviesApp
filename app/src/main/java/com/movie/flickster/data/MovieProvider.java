@@ -8,10 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
-import com.movie.flickster.Utility;
-
-import java.util.Calendar;
-
 /**
  * Provider for movie data.
  */
@@ -21,32 +17,11 @@ public class MovieProvider extends ContentProvider {
     private MovieDbHelper mOpenHelper;
 
     static final int MOVIE = 100;
-    static final int MOVIE_WITH_DATE = 110;
-    static final int MOVIE_WITH_FILTER = 120;
-    static final int MOVIE_WITH_DATE_AND_ID = 111;
+    static final int MOVIE_WITH_ID = 101;
+    static final int MOVIE_WITH_FILTER = 110;
 
-    //movie.date = ?
-    private static final String sDateSelection =
-            MovieContract.MovieEntry.TABLE_NAME +
-                    "." + MovieContract.MovieEntry.COLUMN_DATE + " = ? ";
-
-    private static final String sPopularSelection =
-            MovieContract.MovieEntry.TABLE_NAME +
-                    "." + MovieContract.MovieEntry.COLUMN_DATE + " = ? AND " +
-                    MovieContract.MovieEntry.TABLE_NAME +
-                    "." + MovieContract.MovieEntry.COLUMN_POPULAR + " = ? ";
-
-    private static final String sTopRatedSelection =
-            MovieContract.MovieEntry.TABLE_NAME +
-                    "." + MovieContract.MovieEntry.COLUMN_DATE + " = ? AND " +
-                    MovieContract.MovieEntry.TABLE_NAME +
-                    "." + MovieContract.MovieEntry.COLUMN_TOP_RATED + " = ? ";
-
-    private static final String sDateWithIdSelection =
-            MovieContract.MovieEntry.TABLE_NAME +
-                    "." + MovieContract.MovieEntry.COLUMN_DATE + " = ? AND " +
-                    MovieContract.MovieEntry.TABLE_NAME +
-                    "." + MovieContract.MovieEntry._ID + " = ? ";
+    private static final String sIdSelection =
+            MovieContract.MovieEntry.TABLE_NAME + "." + MovieContract.MovieEntry._ID + " = ? ";
 
     @Override
     public boolean onCreate() {
@@ -62,11 +37,9 @@ public class MovieProvider extends ContentProvider {
         switch (match) {
             case MOVIE:
                 return MovieContract.MovieEntry.CONTENT_TYPE;
-            case MOVIE_WITH_DATE:
-                return MovieContract.MovieEntry.CONTENT_TYPE;
             case MOVIE_WITH_FILTER:
                 return MovieContract.MovieEntry.CONTENT_TYPE;
-            case MOVIE_WITH_DATE_AND_ID:
+            case MOVIE_WITH_ID:
                 return MovieContract.MovieEntry.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -91,71 +64,40 @@ public class MovieProvider extends ContentProvider {
                 );
                 break;
             }
-            case MOVIE_WITH_DATE: {
-                long date = MovieContract.MovieEntry.getDateFromUri(uri);
+            case MOVIE_WITH_FILTER: {
+                String filter = MovieContract.MovieEntry.getFilterFromUri(uri);
+                switch (filter) {
+                    case MovieContract.MovieEntry.FILTER_POPULAR: {
+                        sortOrder = MovieContract.MovieEntry.COLUMN_POPULARITY + " DESC";
+                        break;
+                    }
+                    case MovieContract.MovieEntry.FILTER_TOP_RATED: {
+                        sortOrder = MovieContract.MovieEntry.COLUMN_USER_RATING + " DESC";
+                        break;
+                    }
+                    default: {
+                        sortOrder = MovieContract.MovieEntry.COLUMN_POPULARITY + " DESC";
+                    }
+                }
+
                 retCursor = mOpenHelper.getReadableDatabase().query(
-                        MovieContract.MovieEntry.TABLE_NAME,
+                        MovieContract.MovieEntry.getTableViewFromFilter(filter),
                         projection,
-                        sDateSelection,
-                        new String[]{Long.toString(date)},
+                        null,
+                        null,
                         null,
                         null,
                         sortOrder
                 );
                 break;
             }
-            case MOVIE_WITH_FILTER: {
-                long date = Utility.nearestDay(Calendar.getInstance().getTime());
-                String filter = MovieContract.MovieEntry.getFilterFromUri(uri);
-                switch (filter) {
-                    case MovieContract.MovieEntry.FILTER_POPULAR: {
-                        retCursor = mOpenHelper.getReadableDatabase().query(
-                                MovieContract.MovieEntry.TABLE_NAME,
-                                projection,
-                                sPopularSelection,
-                                new String[]{Long.toString(date), "1"},
-                                null,
-                                null,
-                                sortOrder != null ? sortOrder : MovieContract.MovieEntry.COLUMN_POPULARITY + " DESC"
-                        );
-                        break;
-                    }
-                    case MovieContract.MovieEntry.FILTER_TOP_RATED: {
-                        retCursor = mOpenHelper.getReadableDatabase().query(
-                                MovieContract.MovieEntry.TABLE_NAME,
-                                projection,
-                                sTopRatedSelection,
-                                new String[]{Long.toString(date), "1"},
-                                null,
-                                null,
-                                sortOrder != null ? sortOrder : MovieContract.MovieEntry.COLUMN_USER_RATING + " DESC"
-                        );
-                        break;
-                    }
-                    default: {
-                        retCursor = mOpenHelper.getReadableDatabase().query(
-                                MovieContract.MovieEntry.TABLE_NAME,
-                                projection,
-                                sPopularSelection,
-                                new String[]{Long.toString(date), "1"},
-                                null,
-                                null,
-                                sortOrder
-                        );
-                    }
-                }
-
-
-                break;
-            }
-            case MOVIE_WITH_DATE_AND_ID: {
-                long date = MovieContract.MovieEntry.getDateFromUri(uri);
+            case MOVIE_WITH_ID: {
                 long id = MovieContract.MovieEntry.getIdFromUri(uri);
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         MovieContract.MovieEntry.TABLE_NAME,
                         projection,
-                        sDateWithIdSelection,
-                        new String[]{Long.toString(date), Long.toString(id)},
+                        sIdSelection,
+                        new String[]{Long.toString(id)},
                         null,
                         null,
                         sortOrder
@@ -179,12 +121,13 @@ public class MovieProvider extends ContentProvider {
 
         switch (match) {
             case MOVIE: {
-                long _id = db.insertWithOnConflict(MovieContract.MovieEntry.TABLE_NAME,
-                        null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                long _id = upsert(values);
+
                 if ( _id > 0 )
                     returnUri = MovieContract.MovieEntry.buildMovieUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
+
                 break;
             }
             default:
@@ -251,8 +194,8 @@ public class MovieProvider extends ContentProvider {
                 int returnCount = 0;
                 try {
                     for (ContentValues values : valuesArr) {
-                        long _id = db.insertWithOnConflict(MovieContract.MovieEntry.TABLE_NAME,
-                                null, values, SQLiteDatabase.CONFLICT_REPLACE);
+
+                        long _id = upsert(values);
                         if (_id != -1) {
                             returnCount++;
                         }
@@ -268,14 +211,25 @@ public class MovieProvider extends ContentProvider {
         }
     }
 
+    private long upsert(ContentValues values) {
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        long _id = values.getAsLong(MovieContract.MovieEntry._ID);
+        int rowsAffected = db.update(MovieContract.MovieEntry.TABLE_NAME, values, sIdSelection,
+                new String[]{Long.toString(_id)});
+
+        if (rowsAffected == 0)
+            return db.insert(MovieContract.MovieEntry.TABLE_NAME, null, values);
+
+        return _id;
+    }
+
     static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = MovieContract.CONTENT_AUTHORITY;
 
         matcher.addURI(authority, MovieContract.PATH_MOVIE, MOVIE);
-        matcher.addURI(authority, MovieContract.PATH_MOVIE + "/#", MOVIE_WITH_DATE);
+        matcher.addURI(authority, MovieContract.PATH_MOVIE + "/#", MOVIE_WITH_ID);
         matcher.addURI(authority, MovieContract.PATH_MOVIE + "/*", MOVIE_WITH_FILTER);
-        matcher.addURI(authority, MovieContract.PATH_MOVIE + "/#/#", MOVIE_WITH_DATE_AND_ID);
 
         return matcher;
     }

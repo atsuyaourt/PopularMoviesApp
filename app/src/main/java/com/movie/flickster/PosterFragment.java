@@ -8,12 +8,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
 
+import com.movie.flickster.adapter.MovieAdapter;
 import com.movie.flickster.data.MovieContract;
 
 /**
@@ -24,16 +25,14 @@ public class PosterFragment extends Fragment implements LoaderManager.LoaderCall
     private static final int MOVIE_LOADER = 0;
 
     private static final String[] MOVIE_COLUMNS = {
-            MovieContract.MovieEntry.TABLE_NAME + "." + MovieContract.MovieEntry._ID,
-            MovieContract.MovieEntry.COLUMN_DATE,
+            MovieContract.MovieEntry._ID,
             MovieContract.MovieEntry.COLUMN_POSTER_PATH
     };
 
-    static final int COL_MOVIE_ID = 0;
-    static final int COL_DATE = 1;
-    static final int COL_POSTER_PATH = 2;
+    public static final int COL_MOVIE_ID = 0;
+    public static final int COL_POSTER_PATH = 1;
 
-    MovieAdapter mMovieAdapter; // the adapter to handle movie posters
+    RecyclerView mPosterView;
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -55,24 +54,9 @@ public class PosterFragment extends Fragment implements LoaderManager.LoaderCall
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.movie_posters, container, false);
 
-        mMovieAdapter = new MovieAdapter(getActivity(), null, true);
-
-        // Get a reference to the GridView, and attach the adapter to it.
-        GridView gridView = (GridView) rootView.findViewById(R.id.poster_gridview);
-        gridView.setAdapter(mMovieAdapter);
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-                if (cursor != null) {
-                    ((Callback) getActivity())
-                            .onItemSelected(MovieContract.MovieEntry.buildMovieByDateAndId(
-                                    cursor.getLong(COL_DATE),
-                                    cursor.getLong(COL_MOVIE_ID)
-                            ));
-                }
-            }
-        });
+        mPosterView = (RecyclerView) rootView.findViewById(R.id.posters_recycler_view);
+        mPosterView.setLayoutManager(new GridLayoutManager(getActivity(),
+                getResources().getInteger(R.integer.span_count)));
 
         return rootView;
     }
@@ -96,13 +80,25 @@ public class PosterFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mMovieAdapter.swapCursor(data);
-
+        final MovieAdapter movieAdapter = new MovieAdapter(getActivity(), data);
+        mPosterView.setAdapter(movieAdapter);
+        movieAdapter.setOnItemClickListener(new MovieAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Cursor cursor = movieAdapter.getItemAt(position);
+                if (cursor != null) {
+                    ((Callback) getActivity())
+                            .onItemSelected(MovieContract.MovieEntry.buildMovieUri(
+                                    cursor.getLong(COL_MOVIE_ID)
+                            ));
+                }
+            }
+        });
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mMovieAdapter.swapCursor(null);
+        mPosterView.setAdapter(null);
     }
 
     void onFilterTypeChanged() {

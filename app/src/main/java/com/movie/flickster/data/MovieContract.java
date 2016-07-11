@@ -42,9 +42,6 @@ public class MovieContract {
 
         public static final String TABLE_NAME = "movie";
 
-        // Date, stored as long in milliseconds since the epoch
-        public static final String COLUMN_DATE = "date";
-
         // Title is stored as a String
         public static final String COLUMN_TITLE = "title";
         // Plot synopsis is stored as a String
@@ -69,24 +66,9 @@ public class MovieContract {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
-        public static Uri buildMovieByDate(long date) {
-            return CONTENT_URI.buildUpon()
-                    .appendPath(Long.toString(normalizeDate(date))).build();
-        }
-
-        public static Uri buildMovieByDateAndId(long date, long id) {
-            return CONTENT_URI.buildUpon()
-                    .appendPath(Long.toString(date))
-                    .appendPath(Long.toString(id)).build();
-        }
-
         public static Uri buildMovieWithFilter(String filter) {
             return CONTENT_URI.buildUpon()
                     .appendPath(filter).build();
-        }
-
-        public static long getDateFromUri(Uri uri) {
-            return Long.parseLong(uri.getPathSegments().get(1));
         }
 
         public static String getFilterFromUri(Uri uri) {
@@ -94,7 +76,11 @@ public class MovieContract {
         }
 
         public static long getIdFromUri(Uri uri) {
-            return Long.parseLong(uri.getPathSegments().get(2));
+            return Long.parseLong(uri.getPathSegments().get(1));
+        }
+
+        public static String getTableViewFromFilter(String filter) {
+            return TABLE_NAME + "_" + filter;
         }
     }
 }

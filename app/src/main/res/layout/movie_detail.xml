@@ -84,6 +84,16 @@
                 android:layout_marginTop="@dimen/movie_detail_horizontal_margin"
                 android:layout_marginBottom="@dimen/movie_detail_horizontal_margin"
                 android:textSize="@dimen/movie_detail_small_text" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey_700"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/trailer_recyclerview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 
