@@ -138,6 +138,8 @@ public class FetchMoviesTask extends AsyncTask<String, Void, Void> {
         final String TMDB_POPULARITY = "popularity";
         final String TMDB_RELEASE_DATE = "release_date";
 
+        if (movieJsonStr == null) return;
+
         try {
             JSONObject movieJson = new JSONObject(movieJsonStr);
             JSONArray movieArray = movieJson.getJSONArray(TMDB_RESULTS);

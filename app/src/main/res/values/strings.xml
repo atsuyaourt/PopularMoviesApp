@@ -17,6 +17,7 @@
     <string name="pref_filter_key" translatable="false">sortOrder</string>
     <string name="pref_filter_value_popular" translatable="false">popular</string>
     <string name="pref_filter_value_top_rated" translatable="false">top_rated</string>
+    <string name="title_detail_trailer">Trailers</string>
 
     <string-array name="pref_filter_titles">
         <item>@string/pref_filter_title_popular</item>

@@ -4,4 +4,5 @@
     android:layout_height="wrap_content"
     android:id="@+id/poster_view"
     android:scaleType="fitXY"
-    android:adjustViewBounds="true" />
+    android:adjustViewBounds="true"
+    android:background="@drawable/touch_selector" />

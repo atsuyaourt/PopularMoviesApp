@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.movie.flickster.adapter.TrailerAdapter;
 import com.movie.flickster.data.MovieContract.MovieEntry;
 import com.squareup.picasso.Picasso;
 
@@ -57,6 +58,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     ImageView mPosterView;
 
     RecyclerView mTrailerView;
+    TrailerAdapter mTrailerAdapter;
 
     public DetailFragment() {
     }
@@ -79,10 +81,13 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         mUserRatingView = (TextView) rootView.findViewById(R.id.detail_movie_rating);
         mPosterView = (ImageView) rootView.findViewById(R.id.detail_movie_poster_thumb);
 
+        mTrailerAdapter = new TrailerAdapter(getActivity(), null);
+
         mTrailerView = (RecyclerView) rootView.findViewById(R.id.trailer_recyclerview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mTrailerView.setLayoutManager(layoutManager);
+        mTrailerView.setAdapter(mTrailerAdapter);
 
         return rootView;
     }
@@ -116,7 +121,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         mTitleView.setText(data.getString(COL_TITLE));
         mSynopsisView.setText(data.getString(COL_PLOT_SYNOPSIS));
-        mUserRatingView.setText(data.getDouble(COL_USER_RATING) + "/10");
+        mUserRatingView.setText(Math.round(data.getDouble(COL_USER_RATING) * 10) / 10 + "/10");
 
         long lDate = data.getLong(COL_RELEASE_DATE);
         mReleaseYearView.setText(Utility.getDateStr(lDate,"yyyy"));
@@ -139,7 +144,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     }
 
     private void updateDetails(long movieId) {
-        FetchTrailersTask trailersTask = new FetchTrailersTask(getActivity(), mTrailerView);
+        FetchTrailersTask trailersTask = new FetchTrailersTask(getActivity(), mTrailerAdapter);
         trailersTask.execute(Long.toString(movieId));
     }
 }

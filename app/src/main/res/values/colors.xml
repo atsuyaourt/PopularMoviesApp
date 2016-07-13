@@ -8,4 +8,6 @@
 
     <color name="deep_teal_500">#FF009688</color>
 
+    <color name="white_transparent">#80FFFFFF</color>
+
 </resources>

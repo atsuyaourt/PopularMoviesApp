@@ -3,8 +3,10 @@ package com.movie.flickster;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+
+import com.movie.flickster.adapter.Trailer;
+import com.movie.flickster.adapter.TrailerAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,20 +24,20 @@ import java.util.List;
 /**
  * Created by yoh268 on 7/9/2016.
  */
-public class FetchTrailersTask extends AsyncTask<String, Void, List<String>> {
+public class FetchTrailersTask extends AsyncTask<String, Void, List<Trailer>> {
 
     private final String LOG_TAG = FetchTrailersTask.class.getSimpleName();
 
     private final Context mContext;
-    RecyclerView mRecyclerView;
+    TrailerAdapter mTrailerAdapter;
 
-    public FetchTrailersTask(Context context, RecyclerView recyclerView) {
+    public FetchTrailersTask(Context context, TrailerAdapter trailerAdapter) {
         mContext = context;
-        mRecyclerView = recyclerView;
+        mTrailerAdapter = trailerAdapter;
     }
 
     @Override
-    protected List<String> doInBackground(String... params) {
+    protected List<Trailer> doInBackground(String... params) {
 
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
@@ -94,8 +96,6 @@ public class FetchTrailersTask extends AsyncTask<String, Void, List<String>> {
             }
 
             videoJsonStr = buffer.toString();
-
-            Log.d(LOG_TAG, videoJsonStr);
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error ", e);
             e.printStackTrace();
@@ -123,17 +123,8 @@ public class FetchTrailersTask extends AsyncTask<String, Void, List<String>> {
     }
 
     @Override
-    protected void onPostExecute(List<String> result) {
-        //super.onPostExecute(strings);
-        if (result.size() > 0) {
-            for (String r : result) {
-                Log.d(LOG_TAG, r);
-            }
-
-            TrailerAdapter trailerAdapter = new TrailerAdapter(mContext, result);
-            mRecyclerView.setAdapter(trailerAdapter);
-        }
-
+    protected void onPostExecute(List<Trailer> result) {
+        mTrailerAdapter.setItem(result);
     }
 
     /**
@@ -142,7 +133,7 @@ public class FetchTrailersTask extends AsyncTask<String, Void, List<String>> {
      * @param videoJsonStr The JSON string to be processed
      * @throws JSONException
      */
-    private List<String> getTrailerDataFromJson(String videoJsonStr)
+    private List<Trailer> getTrailerDataFromJson(String videoJsonStr)
             throws JSONException {
 
         // These are the names of the JSON objects that need to be extracted.
@@ -155,7 +146,9 @@ public class FetchTrailersTask extends AsyncTask<String, Void, List<String>> {
         final String TYPE_TRAILER = "Trailer";
         final String SITE_YOUTUBE = "YouTube";
 
-        List<String> trailerList = new ArrayList<String>();
+        List<Trailer> trailerList = new ArrayList<>();
+
+        if (videoJsonStr == null) return null;
 
         try {
             JSONObject videoJson = new JSONObject(videoJsonStr);
@@ -165,9 +158,12 @@ public class FetchTrailersTask extends AsyncTask<String, Void, List<String>> {
                 // Get the JSON object representing a movie
                 JSONObject video = videoArray.getJSONObject(i);
 
+
                 if (video.getString(VIDEO_SITE).equals(SITE_YOUTUBE) &&
                         video.getString(VIDEO_TYPE).equals(TYPE_TRAILER)) {
-                    trailerList.add(video.getString(VIDEO_KEY));
+                    trailerList.add(
+                            new Trailer(video.getString(VIDEO_NAME),video.getString(VIDEO_KEY)));
+
                 }
             }
         } catch (JSONException e) {

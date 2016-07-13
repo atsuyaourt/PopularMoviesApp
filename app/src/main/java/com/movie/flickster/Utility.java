@@ -73,8 +73,4 @@ public class Utility {
     public static String buildTMDBPosterUrl(String imgPath) {
         return TMDB_IMAGE_BASE_URL + imgPath;
     }
-
-    public static String buildYouTubeImgUrl(String imgPath) {
-        return "http://img.youtube.com/vi/" + imgPath + "/0.jpg";
-    }
 }
