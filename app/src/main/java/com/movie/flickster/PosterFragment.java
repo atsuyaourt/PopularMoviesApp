@@ -14,7 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.movie.flickster.adapter.MovieAdapter;
+import com.movie.flickster.adapter.PosterAdapter;
 import com.movie.flickster.data.MovieContract;
 
 /**
@@ -22,17 +22,8 @@ import com.movie.flickster.data.MovieContract;
  */
 public class PosterFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final int MOVIE_LOADER = 0;
-
-    private static final String[] MOVIE_COLUMNS = {
-            MovieContract.MovieEntry._ID,
-            MovieContract.MovieEntry.COLUMN_POSTER_PATH
-    };
-
-    public static final int COL_MOVIE_ID = 0;
-    public static final int COL_POSTER_PATH = 1;
-
     RecyclerView mPosterView;
+    PosterAdapter mPosterAdapter;
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -54,16 +45,32 @@ public class PosterFragment extends Fragment implements LoaderManager.LoaderCall
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.movie_posters, container, false);
 
+        mPosterAdapter = new PosterAdapter(getActivity(), null);
+        mPosterAdapter.setOnItemClickListener(new PosterAdapter.OnItemSelectListener() {
+            @Override
+            public void onItemSelect(View view, int position) {
+                Cursor cursor = mPosterAdapter.getCursor();
+                if (cursor != null) {
+                    cursor.moveToPosition(position);
+                    ((Callback) getActivity())
+                            .onItemSelected(MovieContract.MovieEntry.buildMovieUri(
+                                    cursor.getLong(PosterAdapter.COL_MOVIE_ID)
+                            ));
+                }
+            }
+        });
+
         mPosterView = (RecyclerView) rootView.findViewById(R.id.posters_recycler_view);
         mPosterView.setLayoutManager(new GridLayoutManager(getActivity(),
                 getResources().getInteger(R.integer.span_count)));
+        mPosterView.setAdapter(mPosterAdapter);
 
         return rootView;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        getLoaderManager().initLoader(MOVIE_LOADER, null, this);
+        getLoaderManager().initLoader(PosterAdapter.MOVIE_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -75,35 +82,23 @@ public class PosterFragment extends Fragment implements LoaderManager.LoaderCall
         Uri moviesUri = MovieContract.MovieEntry.buildMovieWithFilter(orderType);
 
         return new CursorLoader(getActivity(), moviesUri,
-                MOVIE_COLUMNS, null, null, null);
+                PosterAdapter.MOVIE_COLUMNS, null, null, null);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        final MovieAdapter movieAdapter = new MovieAdapter(getActivity(), data);
-        mPosterView.setAdapter(movieAdapter);
-        movieAdapter.setOnItemClickListener(new MovieAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Cursor cursor = movieAdapter.getItemAt(position);
-                if (cursor != null) {
-                    ((Callback) getActivity())
-                            .onItemSelected(MovieContract.MovieEntry.buildMovieUri(
-                                    cursor.getLong(COL_MOVIE_ID)
-                            ));
-                }
-            }
-        });
+        mPosterAdapter.changeCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mPosterView.setAdapter(null);
+        //mPosterView.setAdapter(null);
+        mPosterAdapter.changeCursor(null);
     }
 
     void onFilterTypeChanged() {
         updateMovies();
-        getLoaderManager().restartLoader(MOVIE_LOADER, null, this);
+        getLoaderManager().restartLoader(PosterAdapter.MOVIE_LOADER, null, this);
     }
 
     private void updateMovies() {

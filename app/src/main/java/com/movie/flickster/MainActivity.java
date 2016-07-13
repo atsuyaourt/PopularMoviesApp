@@ -101,4 +101,5 @@ public class MainActivity extends AppCompatActivity implements PosterFragment.Ca
             startActivity(intent);
         }
     }
+
 }
