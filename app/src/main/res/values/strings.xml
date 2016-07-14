@@ -5,6 +5,8 @@
 
     <string name="title_activity_detail">Movie Detail</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="title_detail_trailer">Trailers</string>
+    <string name="title_detail_review">Reviews</string>
 
     <string name="wait_message">Please Wait</string>
     <string name="error_fetch_message">Error getting movies</string>
@@ -17,8 +19,6 @@
     <string name="pref_filter_key" translatable="false">sortOrder</string>
     <string name="pref_filter_value_popular" translatable="false">popular</string>
     <string name="pref_filter_value_top_rated" translatable="false">top_rated</string>
-    <string name="title_detail_trailer">Trailers</string>
-    <string name="title_detail_review">Reviews</string>
 
     <string-array name="pref_filter_titles">
         <item>@string/pref_filter_title_popular</item>

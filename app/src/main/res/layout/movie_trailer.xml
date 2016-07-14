@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="false"
-            android:src="@drawable/ic_play_circle_outline_white_24dp"
+            android:src="@drawable/ic_play_circle_filled_white_36dp"
             android:tint="@color/deep_teal_500"
             android:layout_centerInParent="true" />
 
@@ -33,10 +33,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Movie Trailer"
-            android:textColor="@color/black"
             android:layout_alignParentBottom="true"
             android:gravity="center"
-            android:background="@color/white_transparent" />
+            android:background="@color/white_transparent"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:visibility="gone" />
 
     </RelativeLayout>
 

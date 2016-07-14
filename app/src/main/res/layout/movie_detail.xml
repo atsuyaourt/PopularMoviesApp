@@ -10,12 +10,15 @@
         android:layout_height="wrap_content"
         android:text="Movie Title"
         android:id="@+id/detail_movie_title"
-        android:background="@color/deep_teal_500"
-        android:textColor="@color/white"
         android:gravity="center_vertical"
-        android:textSize="@dimen/movie_detail_large_text"
-        android:padding="@dimen/movie_detail_header_paddng"
-        android:minLines="2" />
+        android:paddingLeft="@dimen/movie_detail_header_padding_lr"
+        android:paddingRight="@dimen/movie_detail_header_padding_lr"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:background="@color/accent_material_light"
+        android:textColor="@android:color/primary_text_dark"
+        android:elevation="1dp"
+        android:paddingTop="@dimen/movie_detail_header_padding_tb"
+        android:paddingBottom="@dimen/movie_detail_header_padding_tb" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -53,22 +56,22 @@
                         android:layout_height="wrap_content"
                         android:text="2006"
                         android:id="@+id/detail_movie_release_year"
-                        android:textSize="@dimen/movie_detail_medium_text" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="June 2, 1988"
                         android:id="@+id/detail_movie_release_date"
-                        android:textSize="@dimen/movie_detail_small_text" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                        android:textStyle="italic" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="4.5/10"
                         android:id="@+id/detail_movie_rating"
-                        android:textSize="@dimen/movie_detail_small_text"
-                        android:textColor="@color/black" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
                 </LinearLayout>
 
@@ -83,7 +86,7 @@
                 android:layout_marginLeft="@dimen/movie_detail_vertical_margin"
                 android:layout_marginTop="@dimen/movie_detail_horizontal_margin"
                 android:layout_marginBottom="@dimen/movie_detail_horizontal_margin"
-                android:textSize="@dimen/movie_detail_small_text" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
             <View
                 android:layout_width="match_parent"
@@ -94,7 +97,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/title_detail_trailer"
-                android:textSize="@dimen/movie_detail_medium_text"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/trailer_recycler_view"
@@ -110,7 +113,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/title_detail_review"
-                android:textSize="@dimen/movie_detail_medium_text"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/review_recycler_view"
