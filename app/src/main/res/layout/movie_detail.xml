@@ -16,7 +16,6 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:background="@color/accent_material_light"
         android:textColor="@android:color/primary_text_dark"
-        android:elevation="1dp"
         android:paddingTop="@dimen/movie_detail_header_padding_tb"
         android:paddingBottom="@dimen/movie_detail_header_padding_tb" />
 

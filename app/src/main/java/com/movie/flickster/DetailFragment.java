@@ -135,7 +135,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         mTitleView.setText(data.getString(COL_TITLE));
         mSynopsisView.setText(data.getString(COL_PLOT_SYNOPSIS));
-        mUserRatingView.setText(Math.round(data.getDouble(COL_USER_RATING) * 10) / 10 + "/10");
+        mUserRatingView.setText(Math.round(data.getDouble(COL_USER_RATING) * 10) / 10.0 + "/10");
 
         long lDate = data.getLong(COL_RELEASE_DATE);
         mReleaseYearView.setText(Utility.getDateStr(lDate,"yyyy"));
