@@ -17,8 +17,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.movie.flickster.adapter.ReviewAdapter;
 import com.movie.flickster.adapter.TrailerAdapter;
 import com.movie.flickster.data.MovieContract.MovieEntry;
+import com.movie.flickster.task.FetchReviewsTask;
 import com.movie.flickster.task.FetchTrailersTask;
 import com.squareup.picasso.Picasso;
 
@@ -61,6 +63,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     RecyclerView mTrailerView;
     TrailerAdapter mTrailerAdapter;
 
+    RecyclerView mReviewView;
+    ReviewAdapter mReviewAdapter;
+
     public DetailFragment() {
     }
 
@@ -84,11 +89,19 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         mTrailerAdapter = new TrailerAdapter(getActivity(), null);
 
-        mTrailerView = (RecyclerView) rootView.findViewById(R.id.trailer_recyclerview);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        mTrailerView.setLayoutManager(layoutManager);
+        mTrailerView = (RecyclerView) rootView.findViewById(R.id.trailer_recycler_view);
+        LinearLayoutManager trailerLManager = new LinearLayoutManager(getActivity());
+        trailerLManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mTrailerView.setLayoutManager(trailerLManager);
         mTrailerView.setAdapter(mTrailerAdapter);
+
+        mReviewAdapter = new ReviewAdapter(getActivity(), null);
+
+        mReviewView = (RecyclerView) rootView.findViewById(R.id.review_recycler_view);
+        LinearLayoutManager reviewLManager = new LinearLayoutManager(getActivity());
+        reviewLManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mReviewView.setLayoutManager(reviewLManager);
+        mReviewView.setAdapter(mReviewAdapter);
 
         return rootView;
     }
@@ -147,5 +160,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private void updateDetails(long movieId) {
         FetchTrailersTask trailersTask = new FetchTrailersTask(getActivity(), mTrailerAdapter);
         trailersTask.execute(Long.toString(movieId));
+        FetchReviewsTask reviewsTask = new FetchReviewsTask(getActivity(), mReviewAdapter);
+        reviewsTask.execute(Long.toString(movieId));
     }
 }

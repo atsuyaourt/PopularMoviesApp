@@ -97,7 +97,7 @@
                 android:textSize="@dimen/movie_detail_medium_text"/>
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/trailer_recyclerview"
+                android:id="@+id/trailer_recycler_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -105,6 +105,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/grey_700"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_detail_review"
+                android:textSize="@dimen/movie_detail_medium_text"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/review_recycler_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
     </ScrollView>
