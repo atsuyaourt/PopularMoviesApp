@@ -1,10 +1,12 @@
-package com.movie.flickster;
+package com.movie.flickster.task;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.movie.flickster.BuildConfig;
+import com.movie.flickster.Utility;
 import com.movie.flickster.adapter.Trailer;
 import com.movie.flickster.adapter.TrailerAdapter;
 

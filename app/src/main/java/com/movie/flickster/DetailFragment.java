@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.movie.flickster.adapter.TrailerAdapter;
 import com.movie.flickster.data.MovieContract.MovieEntry;
+import com.movie.flickster.task.FetchTrailersTask;
 import com.squareup.picasso.Picasso;
 
 /**

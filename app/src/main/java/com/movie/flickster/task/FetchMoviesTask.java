@@ -1,4 +1,4 @@
-package com.movie.flickster;
+package com.movie.flickster.task;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.movie.flickster.BuildConfig;
+import com.movie.flickster.Utility;
 import com.movie.flickster.data.MovieContract.MovieEntry;
 
 import org.json.JSONArray;

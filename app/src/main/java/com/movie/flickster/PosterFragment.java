@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 
 import com.movie.flickster.adapter.PosterAdapter;
 import com.movie.flickster.data.MovieContract;
+import com.movie.flickster.task.FetchMoviesTask;
 
 /**
  * Fragment to load movie posters
