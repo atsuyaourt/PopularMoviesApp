@@ -44,7 +44,8 @@ public class MovieDbHelper extends SQLiteOpenHelper {
                     MovieEntry.COLUMN_POSTER_PATH + ", " +
                     MovieEntry.COLUMN_USER_RATING + ", " +
                     MovieEntry.COLUMN_POPULARITY + ", " +
-                    MovieEntry.COLUMN_RELEASE_DATE +
+                    MovieEntry.COLUMN_RELEASE_DATE + ", " +
+                    MovieEntry.COLUMN_FAVORITE +
                 " FROM " + MovieEntry.TABLE_NAME +
                 " WHERE " + MovieEntry.COLUMN_POPULAR + " = 1" +
                 ";";
@@ -58,7 +59,8 @@ public class MovieDbHelper extends SQLiteOpenHelper {
                     MovieEntry.COLUMN_POSTER_PATH + ", " +
                     MovieEntry.COLUMN_USER_RATING + ", " +
                     MovieEntry.COLUMN_POPULARITY + ", " +
-                    MovieEntry.COLUMN_RELEASE_DATE +
+                    MovieEntry.COLUMN_RELEASE_DATE + ", " +
+                    MovieEntry.COLUMN_FAVORITE +
                 " FROM " + MovieEntry.TABLE_NAME +
                 " WHERE " + MovieEntry.COLUMN_TOP_RATED + " = 1" +
                 ";";

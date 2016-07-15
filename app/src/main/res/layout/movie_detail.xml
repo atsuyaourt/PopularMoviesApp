@@ -54,14 +54,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="2006"
-                        android:id="@+id/detail_movie_release_year"
+                        android:id="@+id/detail_movie_year_text"
                         android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="June 2, 1988"
-                        android:id="@+id/detail_movie_release_date"
+                        android:id="@+id/detail_movie_date_text"
                         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                         android:textStyle="italic" />
 
@@ -69,8 +69,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="4.5/10"
-                        android:id="@+id/detail_movie_rating"
+                        android:id="@+id/detail_movie_rating_text"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@android:style/Widget.CompoundButton.Star"
+                        android:id="@+id/detail_movie_favorite_check" />
 
                 </LinearLayout>
 

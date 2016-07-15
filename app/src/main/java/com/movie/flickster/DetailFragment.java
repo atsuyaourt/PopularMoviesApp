@@ -1,5 +1,7 @@
 package com.movie.flickster;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +16,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -42,7 +46,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             MovieEntry.COLUMN_PLOT_SYNOPSIS,
             MovieEntry.COLUMN_RELEASE_DATE,
             MovieEntry.COLUMN_USER_RATING,
-            MovieEntry.COLUMN_POSTER_PATH
+            MovieEntry.COLUMN_POSTER_PATH,
+            MovieEntry.COLUMN_FAVORITE
     };
 
     static final int COL_MOVIE_ID = 0;
@@ -51,6 +56,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     static final int COL_RELEASE_DATE = 3;
     static final int COL_USER_RATING = 4;
     static final int COL_POSTER_PATH = 5;
+    static final int COL_FAVORITE = 6;
 
     // View elements to display movie information
     TextView mTitleView;
@@ -59,6 +65,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     TextView mReleaseDateView;
     TextView mUserRatingView;
     ImageView mPosterView;
+    CheckBox mFavoriteCheck;
 
     RecyclerView mTrailerView;
     TrailerAdapter mTrailerAdapter;
@@ -82,10 +89,22 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         mTitleView = (TextView) rootView.findViewById(R.id.detail_movie_title);
         mSynopsisView = (TextView) rootView.findViewById(R.id.detail_movie_synopsis);
-        mReleaseYearView = (TextView) rootView.findViewById(R.id.detail_movie_release_year);
-        mReleaseDateView = (TextView) rootView.findViewById(R.id.detail_movie_release_date);
-        mUserRatingView = (TextView) rootView.findViewById(R.id.detail_movie_rating);
+        mReleaseYearView = (TextView) rootView.findViewById(R.id.detail_movie_year_text);
+        mReleaseDateView = (TextView) rootView.findViewById(R.id.detail_movie_date_text);
+        mUserRatingView = (TextView) rootView.findViewById(R.id.detail_movie_rating_text);
         mPosterView = (ImageView) rootView.findViewById(R.id.detail_movie_poster_thumb);
+
+        mFavoriteCheck = (CheckBox) rootView.findViewById(R.id.detail_movie_favorite_check);
+        mFavoriteCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                ContentValues updatedValues = new ContentValues(1);
+                updatedValues.put(MovieEntry.COLUMN_FAVORITE, b ? 1 : 0);
+                getActivity().getContentResolver()
+                        .update(MovieEntry.CONTENT_URI, updatedValues, MovieEntry._ID + " = ?",
+                                new String[]{Long.toString(ContentUris.parseId(mUri))});
+            }
+        });
 
         mTrailerAdapter = new TrailerAdapter(getActivity(), null);
 
@@ -140,6 +159,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         long lDate = data.getLong(COL_RELEASE_DATE);
         mReleaseYearView.setText(Utility.getDateStr(lDate,"yyyy"));
         mReleaseDateView.setText(Utility.getDateStr(lDate,"MMM dd, yyyy"));
+
+        mFavoriteCheck.setChecked(data.getInt(COL_FAVORITE) == 1);
 
         updateDetails(data.getLong(COL_MOVIE_ID));
 
