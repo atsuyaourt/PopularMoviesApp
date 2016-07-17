@@ -1,27 +1,29 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".DetailFragment">
+    tools:context=".DetailFragment" >
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Movie Title"
-        android:id="@+id/detail_movie_title"
-        android:gravity="center_vertical"
-        android:paddingLeft="@dimen/movie_detail_header_padding_lr"
-        android:paddingRight="@dimen/movie_detail_header_padding_lr"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:background="@color/accent_material_light"
-        android:textColor="@android:color/primary_text_dark"
-        android:paddingTop="@dimen/movie_detail_header_padding_tb"
-        android:paddingBottom="@dimen/movie_detail_header_padding_tb" />
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Movie Title"
+            android:id="@+id/detail_movie_title"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/movie_detail_header_padding_lr"
+            android:paddingRight="@dimen/movie_detail_header_padding_lr"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:background="@color/accent_material_light"
+            android:textColor="@android:color/primary_text_dark"
+            android:paddingTop="@dimen/movie_detail_header_padding_tb"
+            android:paddingBottom="@dimen/movie_detail_header_padding_tb" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -126,6 +128,7 @@
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
-    </ScrollView>
 
-</LinearLayout>
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

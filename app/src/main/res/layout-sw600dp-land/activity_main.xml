@@ -29,7 +29,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" >
 
             <fragment
                 android:id="@+id/fragment_movie_posters"
@@ -37,7 +38,6 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 tools:layout="@layout/movie_posters" />
 
             <FrameLayout
