@@ -21,6 +21,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
+        final int VIEW_LIMIT = 20;
 
         final String SQL_CREATE_MOVIE_TABLE = "CREATE TABLE " + MovieEntry.TABLE_NAME + " (" +
                 MovieEntry._ID + " INTEGER PRIMARY KEY, " +
@@ -48,6 +49,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
                     MovieEntry.COLUMN_FAVORITE +
                 " FROM " + MovieEntry.TABLE_NAME +
                 " WHERE " + MovieEntry.COLUMN_POPULAR + " = 1" +
+                " LIMIT " + VIEW_LIMIT +
                 ";";
 
         final String SQL_CREATE_TOP_MOVIE_VIEW = "CREATE VIEW IF NOT EXISTS " +
@@ -63,6 +65,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
                     MovieEntry.COLUMN_FAVORITE +
                 " FROM " + MovieEntry.TABLE_NAME +
                 " WHERE " + MovieEntry.COLUMN_TOP_RATED + " = 1" +
+                " LIMIT " + VIEW_LIMIT +
                 ";";
 
         final String SQL_CREATE_FAV_MOVIE_VIEW = "CREATE VIEW IF NOT EXISTS " +
