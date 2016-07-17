@@ -93,18 +93,18 @@ public class PosterFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        //mPosterView.setAdapter(null);
         mPosterAdapter.changeCursor(null);
     }
 
     void onFilterTypeChanged() {
-        updateMovies();
+        String filterType = Utility.getPreferredFilterType(getActivity());
+        if (!filterType.equals(MovieContract.MovieEntry.COLUMN_FAVORITE))
+            updateMovies(filterType);
         getLoaderManager().restartLoader(PosterAdapter.MOVIE_LOADER, null, this);
     }
 
-    private void updateMovies() {
+    private void updateMovies(String filterType) {
         FetchMoviesTask moviesTask = new FetchMoviesTask(getActivity());
-        String filterType = Utility.getPreferredFilterType(getActivity());
         moviesTask.execute(filterType);
     }
 

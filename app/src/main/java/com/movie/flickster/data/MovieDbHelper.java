@@ -65,15 +65,35 @@ public class MovieDbHelper extends SQLiteOpenHelper {
                 " WHERE " + MovieEntry.COLUMN_TOP_RATED + " = 1" +
                 ";";
 
+        final String SQL_CREATE_FAV_MOVIE_VIEW = "CREATE VIEW IF NOT EXISTS " +
+                MovieEntry.getTableViewFromFilter(MovieEntry.FILTER_FAVORITE) + " AS " +
+                " SELECT " +
+                MovieEntry._ID + ", " +
+                MovieEntry.COLUMN_TITLE + ", " +
+                MovieEntry.COLUMN_PLOT_SYNOPSIS + ", " +
+                MovieEntry.COLUMN_POSTER_PATH + ", " +
+                MovieEntry.COLUMN_USER_RATING + ", " +
+                MovieEntry.COLUMN_POPULARITY + ", " +
+                MovieEntry.COLUMN_RELEASE_DATE + ", " +
+                MovieEntry.COLUMN_FAVORITE +
+                " FROM " + MovieEntry.TABLE_NAME +
+                " WHERE " + MovieEntry.COLUMN_FAVORITE + " = 1" +
+                ";";
+
         sqLiteDatabase.execSQL(SQL_CREATE_MOVIE_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_POP_MOVIE_VIEW);
         sqLiteDatabase.execSQL(SQL_CREATE_TOP_MOVIE_VIEW);
+        sqLiteDatabase.execSQL(SQL_CREATE_FAV_MOVIE_VIEW);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL("DROP VIEW IF EXISTS " + MovieEntry.getTableViewFromFilter(MovieEntry.FILTER_POPULAR));
-        sqLiteDatabase.execSQL("DROP VIEW IF EXISTS " + MovieEntry.getTableViewFromFilter(MovieEntry.FILTER_TOP_RATED));
+        sqLiteDatabase.execSQL("DROP VIEW IF EXISTS " +
+                MovieEntry.getTableViewFromFilter(MovieEntry.FILTER_POPULAR));
+        sqLiteDatabase.execSQL("DROP VIEW IF EXISTS " +
+                MovieEntry.getTableViewFromFilter(MovieEntry.FILTER_TOP_RATED));
+        sqLiteDatabase.execSQL("DROP VIEW IF EXISTS " +
+                MovieEntry.getTableViewFromFilter(MovieEntry.FILTER_FAVORITE));
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + MovieEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
