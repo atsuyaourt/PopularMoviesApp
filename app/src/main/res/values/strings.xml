@@ -8,10 +8,6 @@
     <string name="title_detail_trailer">Trailers</string>
     <string name="title_detail_review">Reviews</string>
 
-    <string name="wait_message">Please Wait</string>
-    <string name="error_fetch_message">Error getting movies</string>
-    <string name="error_fetch_detail_message">Error getting movie information</string>
-
     <!-- Strings related to Settings -->
     <string name="pref_filter_label">Filter</string>
     <string name="pref_filter_title_popular">Most Popular</string>

@@ -2,7 +2,6 @@ package com.movie.flickster.task;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -45,13 +44,10 @@ public class FetchMoviesTask extends AsyncTask<String, Void, Void> {
         String movieJsonStr;
 
         String filterType;
-        Uri moviesUri;
-        Cursor cur;
 
         if(params.length == 0) {
             return null;
         }
-
         filterType = params[0]; // filter preference
 
         // Do not proceed if there is no internet connection
@@ -127,7 +123,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, Void> {
      * @param movieJsonStr The JSON string to be processed
      * @throws JSONException
      */
-    private void getMovieDataFromJson(String movieJsonStr, String orderType)
+    private void getMovieDataFromJson(String movieJsonStr, String filterType)
             throws JSONException {
 
         // These are the names of the JSON objects that need to be extracted.
@@ -180,25 +176,25 @@ public class FetchMoviesTask extends AsyncTask<String, Void, Void> {
                 movieValues.put(MovieEntry.COLUMN_POPULARITY, popularity);
                 movieValues.put(MovieEntry.COLUMN_RELEASE_DATE, releaseDate);
 
-                if(orderType.equals(MovieEntry.FILTER_POPULAR)) {
+                if(filterType.equals(MovieEntry.FILTER_POPULAR)) {
                     movieValues.put(MovieEntry.COLUMN_POPULAR, 1);
                 }
-                if(orderType.equals(MovieEntry.FILTER_TOP_RATED)) {
+                if(filterType.equals(MovieEntry.FILTER_TOP_RATED)) {
                     movieValues.put(MovieEntry.COLUMN_TOP_RATED, 1);
                 }
 
                 cVVector.add(movieValues);
             }
 
-            int inserted = 0;
             // add to database
             if ( cVVector.size() > 0 ) {
                 ContentValues[] cvArray = new ContentValues[cVVector.size()];
                 cVVector.toArray(cvArray);
-                inserted = mContext.getContentResolver().bulkInsert(MovieEntry.CONTENT_URI, cvArray);
+                mContext.getContentResolver().bulkInsert(MovieEntry.CONTENT_URI, cvArray);
             }
 
-            Log.d(LOG_TAG, "FetchWeatherTask Complete. " + inserted + " Inserted");
+            // clean database
+            Utility.cleanDb(mContext);
 
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);

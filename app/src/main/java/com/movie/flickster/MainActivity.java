@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -25,14 +24,8 @@ public class MainActivity extends AppCompatActivity implements PosterFragment.Ca
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if (findViewById(R.id.fragment_movie_detail) != null) {
+        if (getResources().getBoolean(R.bool.has_two_panes)) {
             mTwoPane = true;
-            if (savedInstanceState == null) {
-                Log.d(LOG_TAG, "In onCreate, state is null");
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_movie_detail, new DetailFragment(), DETAILFRAGMENT_TAG)
-                        .commit();
-            }
             Uri contentUri = getIntent().getData();
             if(null != contentUri) {
                 onItemSelected(contentUri);
@@ -40,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements PosterFragment.Ca
         } else {
             mTwoPane = false;
         }
-        Log.d(LOG_TAG, "In onCreate");
     }
 
     @Override

@@ -10,124 +10,114 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Movie Title"
-            android:id="@+id/detail_movie_title"
-            android:gravity="center_vertical"
-            android:paddingLeft="@dimen/movie_detail_header_padding_lr"
-            android:paddingRight="@dimen/movie_detail_header_padding_lr"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:background="@color/accent_material_light"
-            android:textColor="@android:color/primary_text_dark"
-            android:paddingTop="@dimen/movie_detail_header_padding_tb"
-            android:paddingBottom="@dimen/movie_detail_header_padding_tb" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/detail_movie_title"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/movie_detail_header_padding_lr"
+        android:paddingRight="@dimen/movie_detail_header_padding_lr"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:background="@color/accent_material_light"
+        android:textColor="@android:color/primary_text_dark"
+        android:paddingTop="@dimen/movie_detail_header_padding_tb"
+        android:paddingBottom="@dimen/movie_detail_header_padding_tb" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="fill_parent"
+            android:layout_marginTop="@dimen/movie_detail_horizontal_margin"
+            android:layout_marginBottom="@dimen/movie_detail_horizontal_margin">
+
+            <ImageView
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/movie_detail_horizontal_margin"
-                android:layout_marginBottom="@dimen/movie_detail_horizontal_margin">
+                android:id="@+id/detail_movie_poster_thumb"
+                android:layout_marginLeft="@dimen/movie_detail_vertical_margin"
+                android:layout_marginRight="@dimen/movie_detail_vertical_margin"
+                android:layout_weight="5"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true" />
 
-                <ImageView
-                    android:layout_width="0dp"
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/movie_detail_vertical_margin"
+                android:layout_marginEnd="@dimen/movie_detail_vertical_margin"
+                android:layout_weight="7" >
+
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/detail_movie_poster_thumb"
-                    android:layout_marginLeft="@dimen/movie_detail_vertical_margin"
-                    android:layout_marginRight="@dimen/movie_detail_vertical_margin"
-                    android:layout_weight="5"
-                    android:scaleType="fitXY"
-                    android:adjustViewBounds="true" />
+                    android:id="@+id/detail_movie_year_text"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="0dp"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/movie_detail_vertical_margin"
-                    android:layout_weight="7">
+                    android:id="@+id/detail_movie_date_text"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textStyle="italic" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="2006"
-                        android:id="@+id/detail_movie_year_text"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/detail_movie_rating_text"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="June 2, 1988"
-                        android:id="@+id/detail_movie_date_text"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                        android:textStyle="italic" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="4.5/10"
-                        android:id="@+id/detail_movie_rating_text"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@android:style/Widget.CompoundButton.Star"
-                        android:id="@+id/detail_movie_favorite_check" />
-
-                </LinearLayout>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@android:style/Widget.CompoundButton.Star"
+                    android:id="@+id/detail_movie_favorite_check" />
 
             </LinearLayout>
 
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Summary of the movie. Blah blah bla"
-                android:id="@+id/detail_movie_synopsis"
-                android:layout_marginRight="@dimen/movie_detail_vertical_margin"
-                android:layout_marginLeft="@dimen/movie_detail_vertical_margin"
-                android:layout_marginTop="@dimen/movie_detail_horizontal_margin"
-                android:layout_marginBottom="@dimen/movie_detail_horizontal_margin"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/grey_700"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/title_detail_trailer"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/trailer_recycler_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/grey_700"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/title_detail_review"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/review_recycler_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
         </LinearLayout>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/detail_movie_synopsis"
+            android:layout_marginRight="@dimen/movie_detail_vertical_margin"
+            android:layout_marginLeft="@dimen/movie_detail_vertical_margin"
+            android:layout_marginTop="@dimen/movie_detail_horizontal_margin"
+            android:layout_marginBottom="@dimen/movie_detail_horizontal_margin"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey_700"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_detail_trailer"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/trailer_recycler_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey_700"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_detail_review"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/review_recycler_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

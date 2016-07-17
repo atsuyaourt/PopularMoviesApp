@@ -1,5 +1,6 @@
 package com.movie.flickster;
 
+import android.annotation.SuppressLint;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -12,7 +13,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -133,7 +133,6 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Log.v(LOG_TAG, "In onCreateLoader");
         if (null != mUri) {
             return new CursorLoader(
                     getActivity(),
@@ -147,9 +146,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         return null;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Log.v(LOG_TAG, "In onLoadFinished");
         if (!data.moveToFirst()) { return; }
 
         mTitleView.setText(data.getString(COL_TITLE));

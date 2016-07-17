@@ -16,10 +16,6 @@
     <style name="DetailsTheme" parent="AppTheme.NoActionBar">
     </style>
 
-    <style name="SettingsTheme" parent="AppTheme">
-        <item name="actionBarStyle">@style/AppTheme.AppBarOverlay</item>
-    </style>
-
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

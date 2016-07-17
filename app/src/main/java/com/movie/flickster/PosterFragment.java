@@ -50,14 +50,14 @@ public class PosterFragment extends Fragment implements LoaderManager.LoaderCall
         mPosterAdapter.setOnItemClickListener(new PosterAdapter.OnItemSelectListener() {
             @Override
             public void onItemSelect(View view, int position) {
-                Cursor cursor = mPosterAdapter.getCursor();
-                if (cursor != null) {
-                    cursor.moveToPosition(position);
-                    ((Callback) getActivity())
-                            .onItemSelected(MovieContract.MovieEntry.buildMovieUri(
-                                    cursor.getLong(PosterAdapter.COL_MOVIE_ID)
-                            ));
-                }
+            Cursor cursor = mPosterAdapter.getCursor();
+            if (cursor != null) {
+                cursor.moveToPosition(position);
+                ((Callback) getActivity())
+                    .onItemSelected(MovieContract.MovieEntry.buildMovieUri(
+                            cursor.getLong(PosterAdapter.COL_MOVIE_ID)
+                    ));
+            }
             }
         });
 

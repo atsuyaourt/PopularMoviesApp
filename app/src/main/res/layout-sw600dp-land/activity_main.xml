@@ -30,7 +30,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:baselineAligned="false">
 
             <fragment
                 android:id="@+id/fragment_movie_posters"
@@ -44,7 +45,8 @@
                 android:id="@+id/fragment_movie_detail"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                tools:ignore="InconsistentLayout" />
 
         </LinearLayout>
 

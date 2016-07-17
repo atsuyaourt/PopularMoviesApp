@@ -211,6 +211,22 @@ public class MovieProvider extends ContentProvider {
         }
     }
 
+    static UriMatcher buildUriMatcher() {
+        final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
+        final String authority = MovieContract.CONTENT_AUTHORITY;
+
+        matcher.addURI(authority, MovieContract.PATH_MOVIE, MOVIE);
+        matcher.addURI(authority, MovieContract.PATH_MOVIE + "/#", MOVIE_WITH_ID);
+        matcher.addURI(authority, MovieContract.PATH_MOVIE + "/*", MOVIE_WITH_FILTER);
+
+        return matcher;
+    }
+
+    /**
+     * Tries to update the entry if it exists, otherwise insert
+     * @param values The value to be inserted
+     * @return The id of the upserted entry
+     */
     private long upsert(ContentValues values) {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         long _id = values.getAsLong(MovieContract.MovieEntry._ID);
@@ -221,16 +237,5 @@ public class MovieProvider extends ContentProvider {
             return db.insert(MovieContract.MovieEntry.TABLE_NAME, null, values);
 
         return _id;
-    }
-
-    static UriMatcher buildUriMatcher() {
-        final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
-        final String authority = MovieContract.CONTENT_AUTHORITY;
-
-        matcher.addURI(authority, MovieContract.PATH_MOVIE, MOVIE);
-        matcher.addURI(authority, MovieContract.PATH_MOVIE + "/#", MOVIE_WITH_ID);
-        matcher.addURI(authority, MovieContract.PATH_MOVIE + "/*", MOVIE_WITH_FILTER);
-
-        return matcher;
     }
 }
