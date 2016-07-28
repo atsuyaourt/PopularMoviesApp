@@ -1,9 +1,11 @@
-# flickster
-An app to allow users to discover the most popular movies playing.
+# Popular Movies App
 
-- Uses [The Movie Db API](themoviedb.org)
-- Images are loaded using [Picasso](http://square.github.io/picasso/)
-- Launcher icon is from [FreeIconsPng](http://www.freeiconspng.com/free-images/movie-icon-15153)
+An android app, optimized for tablets, to help users discover popular and highly rated movies on the web. It displays a scrolling grid of movie trailers, launches a details screen whenever a particular movie is selected, allows users to save favorites, play trailers, and read user reviews. This app utilizes core Android user interface components and fetches movie information using [themoviedb.org](themoviedb.org) web API.
 
-
-* This an [Udacity](https://www.udacity.com) Nanodegree project
+## Modules/Libraries
+- [themoviedb.org](themoviedb.org) web API
+- [Picasso](http://square.github.io/picasso/) library  
+  
+  
+\* thank you to [FreeIconsPng](http://www.freeiconspng.com/free-images/movie-icon-15153) for the launcher icon  
+\* This project is a part of the [Android Developer Nanodegree](https://www.udacity.com/course/android-developer-nanodegree-by-google--nd801)
