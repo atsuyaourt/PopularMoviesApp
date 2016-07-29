@@ -28,6 +28,11 @@ import com.movie.flickster.task.FetchReviewsTask;
 import com.movie.flickster.task.FetchTrailersTask;
 import com.squareup.picasso.Picasso;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
+import butterknife.Unbinder;
+
 /**
  * A fragment to display details about a movie
  */
@@ -59,19 +64,21 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     static final int COL_FAVORITE = 6;
 
     // View elements to display movie information
-    TextView mTitleView;
-    TextView mSynopsisView;
-    TextView mReleaseYearView;
-    TextView mReleaseDateView;
-    TextView mUserRatingView;
-    ImageView mPosterView;
-    CheckBox mFavoriteCheck;
+    @BindView(R.id.detail_movie_title) TextView mTitleView;
+    @BindView(R.id.detail_movie_synopsis) TextView mSynopsisView;
+    @BindView(R.id.detail_movie_year_text) TextView mReleaseYearView;
+    @BindView(R.id.detail_movie_date_text) TextView mReleaseDateView;
+    @BindView(R.id.detail_movie_rating_text) TextView mUserRatingView;
+    @BindView(R.id.detail_movie_poster_thumb) ImageView mPosterView;
+    @BindView(R.id.detail_movie_favorite_check) CheckBox mFavoriteCheck;
 
-    RecyclerView mTrailerView;
+    @BindView(R.id.trailer_recycler_view) RecyclerView mTrailerView;
+    @BindView(R.id.review_recycler_view) RecyclerView mReviewView;
+
     TrailerAdapter mTrailerAdapter;
-
-    RecyclerView mReviewView;
     ReviewAdapter mReviewAdapter;
+
+    private Unbinder mUnbinder;
 
     public DetailFragment() {
     }
@@ -86,29 +93,10 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         }
 
         View rootView = inflater.inflate(R.layout.movie_detail, container, false);
-
-        mTitleView = (TextView) rootView.findViewById(R.id.detail_movie_title);
-        mSynopsisView = (TextView) rootView.findViewById(R.id.detail_movie_synopsis);
-        mReleaseYearView = (TextView) rootView.findViewById(R.id.detail_movie_year_text);
-        mReleaseDateView = (TextView) rootView.findViewById(R.id.detail_movie_date_text);
-        mUserRatingView = (TextView) rootView.findViewById(R.id.detail_movie_rating_text);
-        mPosterView = (ImageView) rootView.findViewById(R.id.detail_movie_poster_thumb);
-
-        mFavoriteCheck = (CheckBox) rootView.findViewById(R.id.detail_movie_favorite_check);
-        mFavoriteCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                ContentValues updatedValues = new ContentValues(1);
-                updatedValues.put(MovieEntry.COLUMN_FAVORITE, b ? 1 : 0);
-                getActivity().getContentResolver()
-                        .update(MovieEntry.CONTENT_URI, updatedValues, MovieEntry._ID + " = ?",
-                                new String[]{Long.toString(ContentUris.parseId(mUri))});
-            }
-        });
+        mUnbinder = ButterKnife.bind(this, rootView);
 
         mTrailerAdapter = new TrailerAdapter(getActivity(), null);
 
-        mTrailerView = (RecyclerView) rootView.findViewById(R.id.trailer_recycler_view);
         LinearLayoutManager trailerLManager = new LinearLayoutManager(getActivity());
         trailerLManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mTrailerView.setLayoutManager(trailerLManager);
@@ -116,7 +104,6 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         mReviewAdapter = new ReviewAdapter(getActivity(), null);
 
-        mReviewView = (RecyclerView) rootView.findViewById(R.id.review_recycler_view);
         LinearLayoutManager reviewLManager = new LinearLayoutManager(getActivity());
         reviewLManager.setOrientation(LinearLayoutManager.VERTICAL);
         mReviewView.setLayoutManager(reviewLManager);
@@ -129,6 +116,12 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         getLoaderManager().initLoader(DETAIL_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
     }
 
     @Override
@@ -182,5 +175,14 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         trailersTask.execute(Long.toString(movieId));
         FetchReviewsTask reviewsTask = new FetchReviewsTask(getActivity(), mReviewAdapter);
         reviewsTask.execute(Long.toString(movieId));
+    }
+
+    @OnCheckedChanged(R.id.detail_movie_favorite_check)
+    public void FavoriteCheckedChanged(CompoundButton compoundButton, boolean b) {
+        ContentValues updatedValues = new ContentValues(1);
+        updatedValues.put(MovieEntry.COLUMN_FAVORITE, b ? 1 : 0);
+        getActivity().getContentResolver()
+                .update(MovieEntry.CONTENT_URI, updatedValues, MovieEntry._ID + " = ?",
+                        new String[]{Long.toString(ContentUris.parseId(mUri))});
     }
 }

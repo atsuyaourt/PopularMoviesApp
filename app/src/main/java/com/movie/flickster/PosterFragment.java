@@ -18,13 +18,19 @@ import com.movie.flickster.adapter.PosterAdapter;
 import com.movie.flickster.data.MovieContract;
 import com.movie.flickster.task.FetchMoviesTask;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 /**
  * Fragment to load movie posters
  */
 public class PosterFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    RecyclerView mPosterView;
+    @BindView(R.id.posters_recycler_view) RecyclerView mPosterView;
     PosterAdapter mPosterAdapter;
+    private Unbinder mUnbinder;
+
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -45,6 +51,7 @@ public class PosterFragment extends Fragment implements LoaderManager.LoaderCall
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.movie_posters, container, false);
+        mUnbinder = ButterKnife.bind(this, rootView);
 
         mPosterAdapter = new PosterAdapter(getActivity(), null);
         mPosterAdapter.setOnItemClickListener(new PosterAdapter.OnItemSelectListener() {
@@ -61,12 +68,17 @@ public class PosterFragment extends Fragment implements LoaderManager.LoaderCall
             }
         });
 
-        mPosterView = (RecyclerView) rootView.findViewById(R.id.posters_recycler_view);
         mPosterView.setLayoutManager(new GridLayoutManager(getActivity(),
                 getResources().getInteger(R.integer.span_count)));
         mPosterView.setAdapter(mPosterAdapter);
 
         return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
     }
 
     @Override

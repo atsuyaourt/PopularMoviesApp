@@ -13,6 +13,9 @@ import com.movie.flickster.Utility;
 import com.movie.flickster.data.MovieContract;
 import com.squareup.picasso.Picasso;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by yoh268 on 7/12/2016.
  */
@@ -58,7 +61,7 @@ public class PosterAdapter extends CursorRecyclerViewAdapter<PosterAdapter.ViewH
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        ImageView posterView;
+        @BindView(R.id.poster_view) ImageView posterView;
 
         OnItemSelectListener mSelectListener;
 
@@ -66,8 +69,7 @@ public class PosterAdapter extends CursorRecyclerViewAdapter<PosterAdapter.ViewH
             super(itemView);
             mSelectListener = selectListener;
             itemView.setOnClickListener(this);
-            posterView = (ImageView) itemView.findViewById(R.id.poster_view);
-
+            ButterKnife.bind(this, itemView);
         }
 
         @Override
